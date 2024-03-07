@@ -1,0 +1,28 @@
+/**
+ * 该脚本不能用kotlin，不然就算在application和library模块中使用apply应用此脚本，
+ * 依然会报错找不到android关键字
+ */
+
+// 这里定义了一个flavor维度
+def DIMENSION_PRODUCT = "product"
+
+def flavors = [
+        "product1",
+        "product2"
+]
+
+def excludes = project.hasProperty('flavorExclude') ? project.flavorExclude : []
+
+android {
+    flavorDimensions += DIMENSION_PRODUCT
+
+    productFlavors {
+        flavors.each { product ->
+            if (!excludes?.contains(product)) {
+                "$product" {
+                    dimension DIMENSION_PRODUCT
+                }
+            }
+        }
+    }
+}
